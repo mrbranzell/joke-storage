@@ -7,7 +7,7 @@ const sqlite = require("sqlite");
 //   message?: string;
 // };
 
-export default async function getAllNotes(
+export default async function getAllTags(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -16,17 +16,7 @@ export default async function getAllNotes(
     driver: sqlite3.Database,
   });
   if (req.method === "GET") {
-    const notes = await db.all("SELECT * FROM note");
+    const notes = await db.all("SELECT * FROM notetag");
     res.json(notes);
-  }
-  if (req.method === "POST") {
-    const result = await db.run(
-      "INSERT INTO note (title, content) VALUES (?, ?)",
-      [req.body.title, req.body.content]
-    );
-    res.status(200).json(result);
-  } else {
-    res.status(400).json({ message: "Only GET requests are allowed" });
-    return;
   }
 }
